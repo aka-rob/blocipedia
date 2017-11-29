@@ -11,19 +11,28 @@
 
   <body>
     <div class="container">
-      <% if user_signed_in? %>
-        Signed in as: <strong><%= current_user.email %></strong> |
-        <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> - <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-      <% else %>
-        <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %> -
-        <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
+        <ul class="nav nav-tabs">
+          <li class="pull-left"><%= link_to 'Blocipedia', root_path %></li>
+        <% if user_signed_in? %>
+          <li class="pull-right"><%= link_to 'Edit profile', edit_user_registration_path %></li>
+          <li class="pull-right"><%= link_to "Sign Out", destroy_user_session_path, method: :delete  %></li>
+          <li class="pull-right email-nav">Welcome <%= current_user.email %>!</li>          
+        <% else %>
+          <li class="pull-right"><%= link_to "Sign Up", new_user_registration_path  %></li>
+          <li class="pull-right"><%= link_to "Sign In", new_user_session_path  %></li>
+        <% end %>
+        </ul>
+        <% if flash[:notice] %>
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <%= flash[:notice] %>
+        </div>
+      <%elsif flash[:alert] %>
+        <div class="alert alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <%= flash[:alert] %>
+        </div>
       <% end %>
-      <!-- <ul class="nav nav-tabs">
-        <li><%= link_to "Blocipedia", root_path %></li>
-        <li class="pull-right"><%= link_to "Sign In", '#' %></li>
-      </ul> -->
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
       <%= yield %>
     </div>
   </body>
