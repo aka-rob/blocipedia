@@ -47,5 +47,8 @@ group :development, :test do
 end
 
 gem 'bootstrap-sass'
+gem 'rails-controller-testing'
 gem 'devise'
 gem 'figaro', '1.0'
+gem 'shoulda'
+gem 'factory_bot_rails', '~> 4.0'
