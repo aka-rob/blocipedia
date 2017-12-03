@@ -19,9 +19,6 @@ RSpec.describe WikisController, type: :controller do
 
   context "signed in standard user" do
     before do
-      sign_in other_user
-      other_wiki = Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: other_user, private: false)
-      sign_out other_user
       sign_in my_user
     end
 

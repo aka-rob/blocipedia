@@ -25,7 +25,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present?
+    if record.private?
+      user.admin? || user.premium?
+    else
+      user.present?
+    end
   end
 
   def edit?
@@ -38,7 +42,7 @@ class WikiPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.admin? || user.premium?
+      if user && (user.admin? || user.premium?)
         scope
       else
         scope.where(private: false)

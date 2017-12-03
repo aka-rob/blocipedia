@@ -6,7 +6,7 @@ class WikisController < ApplicationController
   end
 
   def show
-    @wiki = policy_scope(Wiki.find(params[:id]))
+    @wiki = Wiki.find(params[:id])
     authorize @wiki
   end
 
