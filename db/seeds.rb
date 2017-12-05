@@ -41,6 +41,13 @@ premium = User.create!(
   role: :premium
 )
 
+standard = User.create!(
+  email: 'standard@example.com',
+  password: 'helloworld',
+  password_confirmation: 'helloworld',
+  confirmed_at: Time.now
+)
+
 puts "Seed finished"
 puts "#{User.count} users created"
 puts "#{Wiki.count} wikis created"

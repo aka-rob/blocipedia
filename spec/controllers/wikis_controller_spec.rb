@@ -3,23 +3,61 @@ require 'rails_helper'
 RSpec.describe WikisController, type: :controller do
   let(:my_user) { create(:user) }
   let(:my_wiki) { create(:wiki) }
+  let(:p_wiki) { create(:wiki, private: true) }
   let(:other_user) { create(:user) }
 
-  describe "GET index" do
-    it "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
+  context "guest user not signed in" do
+    describe "GET index" do
+      it "returns http success" do
+        get :index
+        expect(response).to have_http_status(:success)
+      end
+  
+      it "assigns Wiki.all to wiki" do
+        get :index
+        expect(assigns(:wikis)).to eq([my_wiki])
+      end
     end
 
-    it "assigns Wiki.all to wiki" do
-      get :index
-      expect(assigns(:wikis)).to eq([my_wiki])
+    describe "GET show" do
+      it "returns http success" do
+        get :show, params: { id: my_wiki.id }
+        expect(response).to have_http_status(:success)
+      end
+
+      it "renders the show view" do
+        get :show, params: { id: my_wiki.id }
+        expect(response).to render_template :show
+      end
+
+      it "assigns my_wiki to @wiki" do
+        get :show, params: { id: my_wiki.id }
+        expect(assigns(:wiki)).to eq(my_wiki)
+      end
+
+      it "returns http redirect for private wiki" do
+        get :show, params: { id: p_wiki.id }
+        expect(response).to have_http_status(:redirect)
+      end
+
     end
   end
 
   context "signed in standard user" do
     before do
       sign_in my_user
+    end
+
+    describe "GET index" do
+      it "returns http success" do
+        get :index
+        expect(response).to have_http_status(:success)
+      end
+  
+      it "assigns Wiki.all to wiki" do
+        get :index
+        expect(assigns(:wikis)).to eq([my_wiki])
+      end
     end
 
     describe "GET show" do

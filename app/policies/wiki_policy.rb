@@ -1,14 +1,14 @@
 class WikiPolicy < ApplicationPolicy
 
   def index?
-    user.present?
+    true
   end
 
   def show?
     if record.private?
-      user.admin? || user.premium?
+      user && (user.admin? || user.premium?)
     else
-      user.present?
+      true
     end
   end
 
@@ -43,9 +43,9 @@ class WikiPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user && (user.admin? || user.premium?)
-        scope
+        scope.all
       else
-        scope.where(private: :false)
+        scope.where(private: false)
       end
     end
   end
