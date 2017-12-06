@@ -34,8 +34,18 @@
       </div>
 
       <div class="form-group">
-        <%= f.submit "Update", class: 'btn btn-success' %>
+        <%= f.submit "Update", class: 'btn btn-primary' %>
+        <% if current_user.standard? %>
+          <%= link_to "Upgrade to Premium!", '../charges/new', class: 'btn btn-success' %>
+        <% end %>
       </div>
+    <% end %>
+    <% if current_user.premium? %>
+      <h3>Downgrade to Standard</h3>
+      <ul>
+        <li>All private wikis will become public! :(</li>
+      </ul>
+      <%= button_to "Downgrade", users_registrations_downgrade_path, class: 'btn btn-danger', method: :downgrade %>
     <% end %>
 
     <h3>Cancel my account</h3>
